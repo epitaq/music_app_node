@@ -1,0 +1,198 @@
+/* スクロールバーを変更 */
+::-webkit-scrollbar{
+    width: 10px;
+    }
+::-webkit-scrollbar-track{
+    background: #fff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: inset 0 0 2px #fff;
+}
+::-webkit-scrollbar-thumb{
+    background: #aaa;
+    border-radius: 10px;
+    box-shadow: none;
+}
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    overflow: hidden;
+    background-color: black;
+    color:  white;
+    font-family: 'Kiwi Maru', serif;
+}
+ul {
+    list-style: none;
+    padding: 0;
+}
+a {
+    text-decoration:none;
+    color: white;
+}
+
+.header{
+    height: 32px;
+    text-align: center;
+}
+.headerURL{
+    margin: 0 3rem;
+}
+/* .primary{} */
+.primary{
+    height: 30vh;
+    display: flex;
+    justify-content: center;
+}
+#player{
+    /* padding: 16px; */
+    height: 100%;
+}
+.secondary{
+    height: calc(70vh - 76px - 32px);
+    margin: 0 1rem;
+}
+.narrowDown{
+    height: 24px;
+    display: flex;
+    margin-left: auto;
+    z-index: 10000;
+}
+.checkbox{
+    height: 12rem;
+    background-color: black;
+    padding: 1rem;
+}
+/* .setting1{
+    display: flex;
+} */
+.music-list{
+    overflow-y: scroll;
+    height: calc(100% - 20px - 24px);  /* */
+    margin: 10px 0;
+}
+.movieLi{
+    margin: 0.2rem 0;
+    display: flex;
+    border-bottom: 1px solid #ccc;
+}
+.img{
+    height: 3rem;
+    width: 4rem;
+    margin: auto 0;
+}
+.titleName{
+    margin: 0.2rem 1rem;
+    line-height: 1.2;
+}
+.title{
+    font-size: 1.5rem;
+    font-weight: bold;
+    height: 2rem;
+}
+.titleANDname{
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+.control{
+    position: fixed;
+    bottom: 0;
+    height: 76px;
+    width: 100vw;
+    background-color: #002020;
+    display: flex;
+    align-items: center;
+}
+.controlChild{
+    flex: 1;
+    text-align: center;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.timeSlider{
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    height: 3px;
+    width: 100%;
+}
+.LIcon {
+    width: 56px;
+    height: 76px;
+    padding: 22px 12px;
+}
+.RIcon{
+    width: 76px;
+    height: 76px;
+    padding: calc(76px - 54px);
+}
+#information{
+    display: none;
+}
+#VRS{
+    display: none;
+}
+
+.videoInfo{
+    max-width: 50vw;
+    width: 100%;
+    margin: 3px 0;
+    height: 76px;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.conTitle{
+    font-size: 2rem;
+    font-weight: bold;
+}
+.volume{
+    margin-left: auto;
+    display: flex;
+}
+.volumeSlider{
+    min-width: 50px;
+    max-width: 100px;
+    width: calc(33vw - 300px);
+}
+/* .slider{
+    margin: auto 0;
+} */
+/* .volumeRepeatShuffle{
+    display: flex;
+} */
+
+/* 画面サイズが480pxからはここを読み込む */
+@media screen and (min-aspect-ratio: 1/1) {
+    .columns{
+        display: flex;
+        width: 100%;
+        height: calc(100vh - 76px - 32px);
+        /* padding: 0 3rem; */
+    }
+    .primary{
+        height: calc(100vh - 76px - 32px);
+        margin: 0 1.5rem 0 3rem;
+    }
+    .secondary{
+        margin: 0 3rem 0 1.5rem;
+    }
+    .columnsChild{
+        flex: 1;
+        width: 100%;
+        height: calc(100vh - 76px - 32px);
+    }
+    #information{
+        display: flex;
+    }
+    #VRS{
+        display: flex;
+    }
+}

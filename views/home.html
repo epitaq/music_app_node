@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ja">
+    <head>
+        <!-- Googleアナリティクス -->
+        {% if GOOGLE_ANALYTICS_TRACKING_ID %}
+            {% include 'musicapp/ga.html' %}
+        {% endif %}
+        <meta charset="utf-8">
+        <meta http-equiv="content-language" content="ja">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>music_app</title>
+        <!-- ファビコン -->
+        <link rel="icon" href="{% static 'musicapp/icon/favicon.ico' %}">
+        <!-- css -->
+        <link rel="stylesheet" href="{% static 'musicapp/css/home.css' %}">
+        <!-- フォント -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <header class="header">
+            <a href="{% url 'home' %}" class="headerURL">home</a>
+            <a href="{% url 'player' %}" class="headerURL">player</a>
+            <a href="{% url 'clipping' %}" class="headerURL">切り抜き</a>
+        </header>
+        <!-- 検索 -->
+        <div>
+            <form method="GET" action="{% url 'player' %}" class="search">
+                <input type="text" name="q"  placeholder="検索" class="searchBox">
+            </form>
+        </div>
+        <!-- タイプの選択 -->
+        <!-- idだけを二次元配列で送る -->
+        <div class="libList">
+            {% for lib in libList %}
+            <a href="{% url 'player' %}?acc={{ lib.url }}" class="lib">
+                <div style="margin-left: 19rem; height: 10rem;">
+                    <img src="https://img.youtube.com/vi/{{ lib.photo.0 }}/mqdefault.jpg" alt="" class="selectType" style="transform: rotateZ(5deg);"><img src="https://img.youtube.com/vi/{{ lib.photo.1 }}/mqdefault.jpg" alt="" class="selectType" style="transform: rotateZ(-5deg);"><img src="https://img.youtube.com/vi/{{ lib.photo.2 }}/mqdefault.jpg" alt="" class="selectType" style="transform: rotateZ(0deg);">
+                </div>
+                <div>
+                    <h2>{{ lib.title }}</h2>
+                    <div>{{ lib.comment }}</div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        <!-- 全ての動画 -->
+        <div class="videoList">
+            {% for video in videoList %}
+                <a href="{% url 'player' %}?v={{ video.id }}" class="video">
+                    <img src="https://img.youtube.com/vi/{{ video.movie }}/mqdefault.jpg" alt="{{ video.movie }}" class="img">
+                    <p class="title">{{ video.title }}</p>
+                    <p class="name">{{ video.name }}</p>
+                </a>
+            {% endfor %}
+        </div>
+    </body>
+</html>

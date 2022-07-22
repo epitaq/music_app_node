@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="ja">
+    <head>
+        <!-- Googleアナリティクス -->
+        {% if GOOGLE_ANALYTICS_TRACKING_ID %}
+            {% include 'musicapp/ga.html' %}
+        {% endif %}
+        <meta charset="utf-8">
+        <meta http-equiv="content-language" content="ja">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>music_app</title>
+        <link rel="icon" href="{% static 'musicapp/icon/favicon.ico' %}">
+        <link rel="stylesheet" href="{% static 'musicapp/css/player.css' %}">
+        <!-- フォント -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <header class="header">
+            <a href="{% url 'home' %}" class="headerURL">home</a>
+            <a href="{% url 'player' %}" class="headerURL">player</a>
+            <a href="{% url 'clipping' %}" class="headerURL">切り抜き</a>
+        </header>
+        <!-- 動画と動画再生リスト -->
+        <div class="columns">
+            <!-- プレイヤー -->
+            <div class="primary columnsChild" id="primary">
+                <div id="player"></div>
+            </div>
+            <!-- 動画の再生リスト -->
+            <div class="secondary columnsChild">
+                <!-- 検索 -->
+                <div class="narrowDown" id="narrowDown">
+                    <form method="GET" style="display: flex; margin-left: auto;">
+                        <div id="selectType">
+                            <!-- ボタン -->
+                            <!-- <p id="selectTypeB" style="text-align: right;">選択</p> -->
+                            <!-- type選択 -->
+                                <!-- <div class="checkbox" style="display: none;" id="selectTypeL" > -->
+                                    <!-- Djangoで自動作成 -->
+                                    <!-- {% for type in keeping %}
+                                        <label style="display: block;">
+                                            <input type="checkbox" name="type" value="{{ type }}" >{{ type }}
+                                        </label>
+                                    {% endfor %}
+                                </div> -->
+                        </div>
+                        <input type="text" name="q"  placeholder="検索">
+                        <button type="submit">検索</button>
+                    </form>
+                </div>
+                <!-- 再生リスト -->
+                <div class="music-list">
+                    <ul id="movie-ul"></ul>
+                    <template id="template-li">
+                        <li class="movieLi" >
+                            <img class="img">
+                            <div class="titleName">
+                                <p class="title titleANDname"></p>
+                                <p class="name titleANDname"></p>
+                            </div>
+                        </li>
+                    </template>
+                </div>
+            </div>
+        </div>
+        <!-- コントトールパネル -->
+        <div class="control">
+            <div class="controlChild">
+                <!-- 時間管理のスライダー -->
+                <input type="range" min="0" max="1" step="0.001" value="0" id="timeSlider" class="timeSlider" >
+                <img src="{% static 'musicapp/images/skip_previous_white_24dp.svg' %}" onclick="restoreVideo()" class="LIcon" id="skipPrevious">
+                <img src="{% static 'musicapp/images/play_arrow_white_24dp.svg' %}" id="playArrow" onclick="playArrow()" class="LIcon">
+                <img src="{% static 'musicapp/images/skip_next_white_24dp.svg' %}" onclick="skipVideo()" class="LIcon" style="margin-right: 24px;">
+                <div id="digitalTimer">00:00/00:00</div>
+            </div>
+            <!-- タイトル -->
+            <div class="controlChild" id="information">
+                <div class="videoInfo" >
+                    <p class="conTitle" id="controlTitle"></p>
+                    <p class="conName" id="controlName"></p>
+                </div>
+            </div>
+            <!-- レピート＆シャッフル&VOL -->
+            <div class="controlChild" id="VRS">
+                <div class="volume" id="volume">
+                    <input type="range" min="0" max="100" step="1" value="100" id="volumeSlider" class="volumeSlider" style="display: none;">
+                    <img src="{% static 'musicapp/images/volume_up_white_24dp.svg' %}" id="volumeButton" onclick="changeMute()" class="RIcon" >
+                </div>
+                <img src="{% static 'musicapp/images/repeat_white_24dp.svg' %}" id="repeatButton" onclick="changeRepeat()" class="RIcon" >
+                <img src="{% static 'musicapp/images/shuffle_white_24dp.svg' %}" id="shuffleButton" onclick="videoListShuffle()" class="RIcon" style="margin-right: 32px;">
+            </div>
+        </div>
+        {{ data|json_script:"data" }}
+        <script type="text/javascript" src="{% static 'musicapp/javascript/player.js' %}"></script>
+    </body>
+</html>
