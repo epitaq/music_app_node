@@ -8,6 +8,7 @@ var favicon = require('serve-favicon');
 // views/*.ejs のファイル名
 var indexRouter = require('./routes/index');
 var playerRouter = require('./routes/player');
+var clipRouter = require('./routes/clip');
 var app = express();
 
 // view engine setup
@@ -24,6 +25,7 @@ app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
 // URl
 app.use('/', indexRouter);
 app.use('/player', playerRouter);
+app.use('/clip', clipRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

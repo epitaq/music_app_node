@@ -205,3 +205,37 @@ window.addEventListener('resize', function () {
     player.setSize(width=document.getElementById('primary').clientWidth-32,
                     (height=document.getElementById('primary').clientWidth-32)*(3/4))
 })
+
+
+// postの実装
+async function doPost(){
+    // const response = await fetch("https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec", {
+    // method: "POST",
+    // mode: "no-cors",
+    // headers: {
+    //     'Content-Type': 'application/json'
+    // },
+    // body: JSON.stringify(musicData)  // リクエスト本文に文字列化したJSON形式のデータを設定
+    // });
+
+    // let data = await response
+    // console.log(data)
+
+    // if (response.ok){
+    //     let json = await response.text()
+    //     console.log(json)
+    // }
+
+    fetch("https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(musicData)  // リクエスト本文に文字列化したJSON形式のデータを設定
+        })
+        .then((res) => {
+            console.log(res)
+        })
+
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="content-language" content="ja">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>clipping</title>
+        <link rel="stylesheet" href="/stylesheets/clip.css">
+        <!-- フォント -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <!-- 左側 -->
+        <div class="workspace" id="primary">
+            <!-- プレイヤー -->
+            <div id="player"></div>
+            <!-- 時間の記録ボタン -->
+            <div>
+                <div onclick="saveStart()">初めの時間を記録</div>
+                <div onclick="saveEnd()">終わりの時間を記録</div>
+            </div>
+            <!-- スキップスライダー -->
+            <div>
+                -25秒<input type="range" min="-25" max="25" step="0.1" value="0" id="skipRange" class="skipRange" list="timeList">25秒
+                    <datalist id="timeList">
+                        <option value="-25"></option>
+                        <option value="-20"></option>
+                        <option value="-15"></option>
+                        <option value="-10"></option>
+                        <option value="-5"></option>
+                        <option value="0"></option>
+                        <option value="5"></option>
+                        <option value="10"></option>
+                        <option value="15"></option>
+                        <option value="20"></option>
+                        <option value="25"></option>
+                    </datalist>
+            </div>
+        </div>
+        <!-- 右側 -->
+        <div class="workspace">
+            <!-- 動画情報 -->
+            <div>
+                <!-- 動画IDの入力 -->
+                <label for="videoId">動画ID</label>
+                <input type="text" id="videoId">
+                <br>
+                <!-- 名前の入力 -->
+                <label for="singer">名前</label>
+                <input type="text" id="singer">
+                <br>
+                <!-- ファイルのアップロード -->
+                <label for="upData"></label>
+                <input type="file" id="upData">
+                <br>
+            </div>
+            <!-- 保存されたデータの表 -->
+            <table id="movieData" class="table">
+                <tbody>
+                    <tr>
+                        <th>movie</th><th>name</th><th>title</th><th>start</th><th>end</th>
+                    </tr>
+                </tbody>
+            </table>
+            <!-- 入力表 -->
+            <table id="inputData" class="table">
+                <tbody>
+                    <tr>
+                        <td class="movie"><input type="text" class="inputData" id="inputMovie" placeholder="movie"></td>
+                        <td class="name"><input type="text" class="inputData" id="inputName" placeholder="name"></td>
+                        <td class="title"><input type="text" class="inputData" id="inputTitle" placeholder="title"></td>
+                        <td class="start"><input type="text" class="inputData" id="inputStart" placeholder="start"></td>
+                        <td class="end"><input type="text" class="inputData" id="inputEnd" placeholder="end"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="addSaveCheck">
+                <div onclick="getData()" class="addSaveCheckButton" style="margin-left: auto;"><img src="/images/playlist_add_black_24dp.svg" class="buttonImg"> 追加</div>
+                <div onclick="dataExport()" class="addSaveCheckButton"><img src="/images/save_alt_black_24dp.svg" class="buttonImg">保存</div>
+                <div onclick="doPost()" class="addSaveCheckButton"><img src="/images/save_alt_black_24dp.svg" class="buttonImg">サーバーに保存</div>
+                <div onclick="checkVideo()" class="addSaveCheckButton"><img src="/images/done_black_24dp.svg" class="buttonImg">確認</div>
+            </div>
+        </div>
+        <script type="text/javascript" src="/javascripts/clip.js"></script>
+    </body>
+</html>
