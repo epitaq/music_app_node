@@ -29,23 +29,12 @@
             <div class="secondary columnsChild">
                 <!-- 検索 -->
                 <div class="narrowDown" id="narrowDown">
-                    <form method="GET" style="display: flex; margin-left: auto;">
+                    <!-- <form method="GET" style="display: flex; margin-left: auto;"> -->
                         <div id="selectType">
-                            <!-- ボタン -->
-                            <!-- <p id="selectTypeB" style="text-align: right;">選択</p> -->
-                            <!-- type選択 -->
-                                <!-- <div class="checkbox" style="display: none;" id="selectTypeL" > -->
-                                    <!-- Djangoで自動作成 -->
-                                    <!-- {% for type in keeping %}
-                                        <label style="display: block;">
-                                            <input type="checkbox" name="type" value="{{ type }}" >{{ type }}
-                                        </label>
-                                    {% endfor %}
-                                </div> -->
                         </div>
-                        <input type="text" name="q"  placeholder="検索">
-                        <button type="submit">検索</button>
-                    </form>
+                        <input type="text" name="q"  placeholder="検索" id="textBox">
+                        <button type="submit" id="search">検索</button>
+                    <!-- </form> -->
                 </div>
                 <!-- 再生リスト -->
                 <div class="music-list">

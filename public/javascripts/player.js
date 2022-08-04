@@ -10,19 +10,24 @@ if (window.opener){
 } else {
     // サーバーからデータを取得
     console.log('サーバーからデータを取得')
-    getDataFromServer()
+    getDataFromServer('')
 }
 
 // ajax
 // fetchを使って実装
-async function getDataFromServer (){
-    let res = await fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec')
+async function getDataFromServer (query){
+    let res = await fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?name=' + query)
     videoList = await res.json()
     // htmlを変更
     createHtmlMusicList()
 }
 
-
+// 検索
+document.getElementById('textBox').addEventListener('change', () => {
+    let query = document.getElementById('textBox').value
+    console.log('get data')
+    getDataFromServer(query)
+})
 
 // もし一個も見つからなかったら
 if (videoList.length == 0){
