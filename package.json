@@ -6,9 +6,10 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "body-parser": "^1.20.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "ejs": "~2.6.1",
+    "ejs": "^3.1.8",
     "express": "~4.16.1",
     "google-spreadsheet": "^3.3.0",
     "googleapis": "^105.0.0",

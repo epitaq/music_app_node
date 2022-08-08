@@ -19,9 +19,9 @@ function onYouTubeIframeAPIReady() {
 
 
 // 離れる時に警告
-window.onbeforeunload = function(e) {
-    e.returnValue = "ページを離れようとしています。よろしいですか？";
-}
+// window.onbeforeunload = function(e) {
+//     e.returnValue = "ページを離れようとしています。よろしいですか？";
+// }
 
 
 // メインのデータ open先でも使いたいからVARにしている
@@ -40,6 +40,8 @@ function videoIdChange(){
     })
     // 自動入力
     document.getElementById('inputMovie').value = videoId
+    // データを取得
+    getDataFromServer(videoId)
 }
 // 入力欄のnameを自動入力
 document.getElementById('singer').addEventListener('change', singerChange)
@@ -48,6 +50,22 @@ function singerChange(){
     document.getElementById('inputName').value = singer
 }
 
+// ajax
+// fetchを使って実装
+async function getDataFromServer (query){
+    document.querySelector("#movieData").style.display = 'none' // データを非表示
+    document.querySelector("#inputData").style.display = 'none'
+    document.querySelector("#loader").style.display = '' // ぐるぐるを表示
+    let res = await fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?name=' + query)
+    musicData = await res.json()
+    // id 削除
+    for (let i=0;i<musicData.length;i++){
+        delete musicData[i].id
+    }
+    createTable() // テーブルに反映
+    singer =
+    singerChange() // singerの変更
+}
 
 // 時間用の0を追加
 function addZero (num) {
@@ -60,6 +78,10 @@ function addZero (num) {
 
 // musicDataを元にhtmlを作成
 function createTable(){
+    document.querySelector("#movieData").style.display = '' // データを表示
+    document.querySelector("#inputData").style.display = ''
+    document.querySelector("#loader").style.display = 'none' // ぐるぐるを非表示
+
     const movieTable = document.querySelector("#movieData > tbody")
     movieTable.innerHTML = '<tr><th>movie</th><th>name</th><th>title</th><th>start</th><th>end</th></tr>'
     let count = 0 // id用の通し番号
@@ -187,7 +209,7 @@ function saveEnd (){
 // 作成したデータを確認
 // データはopenerから取得される
 function checkVideo () {
-    window.open('/musicapp/player/')
+    window.open('/player/')
 }
 
 
@@ -209,33 +231,19 @@ window.addEventListener('resize', function () {
 
 // postの実装
 async function doPost(){
-    // const response = await fetch("https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec", {
-    // method: "POST",
-    // mode: "no-cors",
-    // headers: {
-    //     'Content-Type': 'application/json'
-    // },
-    // body: JSON.stringify(musicData)  // リクエスト本文に文字列化したJSON形式のデータを設定
-    // });
-
-    // let data = await response
-    // console.log(data)
-
-    // if (response.ok){
-    //     let json = await response.text()
-    //     console.log(json)
-    // }
-
-    fetch("https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec", {
-        method: "POST",
-        mode: "no-cors",
+    fetch('/clip/addData', {
+        method: 'POST', // or 'PUT'
         headers: {
-            'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
         },
-        body: JSON.stringify(musicData)  // リクエスト本文に文字列化したJSON形式のデータを設定
-        })
-        .then((res) => {
-            console.log(res)
-        })
-
+        body: JSON.stringify(musicData),
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 }
+

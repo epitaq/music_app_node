@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var favicon = require('serve-favicon');
+const bodyParser = require('body-parser')
 
 // views/*.ejs のファイル名
 var indexRouter = require('./routes/index');
@@ -22,7 +23,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(favicon(path.join(__dirname,'public','images','favicon.ico')));
+app.use(favicon(path.join(__dirname,'public','images','favicon.ico'))); // ファビコン
+app.use(bodyParser.json()) // POST
+app.use(bodyParser.urlencoded({extended: true})) // post
 
 // URl
 app.use('/', indexRouter);

@@ -5,7 +5,10 @@
         <meta http-equiv="content-language" content="ja">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>clipping</title>
+        <!-- スタイルシート -->
+        <link rel="stylesheet" href="/stylesheets/main.css">
         <link rel="stylesheet" href="/stylesheets/clip.css">
+        <link rel="stylesheet" href="/stylesheets/loader.css">
         <!-- フォント -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,6 +79,8 @@
                     </tr>
                 </tbody>
             </table>
+            <!-- ロード中 -->
+            <div class="loader" id="loader" style="transform: scale(0.5); display: none;">Loading...</div>
             <div class="addSaveCheck">
                 <div onclick="getData()" class="addSaveCheckButton" style="margin-left: auto;"><img src="/images/playlist_add_black_24dp.svg" class="buttonImg"> 追加</div>
                 <div onclick="dataExport()" class="addSaveCheckButton"><img src="/images/save_alt_black_24dp.svg" class="buttonImg">保存</div>
