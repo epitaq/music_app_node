@@ -1,12 +1,15 @@
 // 動画のリスト
-let videoList = []
+let musicData = []
 
 if (window.opener){
     console.log('うつってきた')
-    videoList = window.opener.window.musicData
-    for (let i=0;i<videoList.length;i++){
-        videoList[i].id = i
+    musicData = window.opener.window.musicData
+    for (let i=0;i<musicData.length;i++){
+        musicData[i].id = i
     }
+    setTimeout(() => {
+        createHtmlMusicList()
+    }, 100);
 } else {
     // サーバーからデータを取得
     console.log('サーバーからデータを取得')
@@ -16,8 +19,10 @@ if (window.opener){
 // ajax
 // fetchを使って実装
 async function getDataFromServer (query){
+    document.querySelector("#loader").style.display = '' // ぐるぐるの表示
+    document.querySelector("#movie-ul").style.display = 'none' //リスト非表示
     let res = await fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?name=' + query)
-    videoList = await res.json()
+    musicData = await res.json()
     // htmlを変更
     createHtmlMusicList()
 }
@@ -30,8 +35,8 @@ document.getElementById('textBox').addEventListener('change', () => {
 })
 
 // もし一個も見つからなかったら
-if (videoList.length == 0){
-    videoList = [
+if (musicData.length == 0){
+    musicData = [
         {
             "id": "epita",
             "movie": "epita",
@@ -54,10 +59,10 @@ function onYouTubeIframeAPIReady() {
     player = new YT.Player('player', {
         height: document.getElementById('primary').clientHeight-32,
         width: document.getElementById('primary').clientWidth-32,
-        videoId: videoList[videoIndex].movie,
+        videoId: musicData[videoIndex].movie,
         playerVars: {
-            start: videoList[videoIndex].start,
-            end: videoList[videoIndex].end,
+            start: musicData[videoIndex].start,
+            end: musicData[videoIndex].end,
             fs: 0,
             controls: 0,
         },
@@ -70,13 +75,13 @@ function onYouTubeIframeAPIReady() {
 }
 
 
-// videoListを変更するたびに更新する
-// 基本的には今の動画のvideoListでのインデックスを保存する
+// musicDataを変更するたびに更新する
+// 基本的には今の動画のmusicDataでのインデックスを保存する
 let videoIndex = 0
 // 最初に再生する動画の指定がある場合
 let searchParams = new URLSearchParams(window.location.search)
-if (searchParams.get('v') && videoList.find((ob) => ob.id == searchParams.get('v'))){
-    videoIndex = videoList.indexOf(videoList.find((ob) => ob.id == searchParams.get('v')))
+if (searchParams.get('v') && musicData.find((ob) => ob.id == searchParams.get('v'))){
+    videoIndex = musicData.indexOf(musicData.find((ob) => ob.id == searchParams.get('v')))
 }
 
 
@@ -100,10 +105,10 @@ function onPlayerStateChange (event){
     if (event.data==0 && !loadDone) {
         videoIndex += 1
         loadDone = true
-        if (videoIndex >= videoList.length) {
+        if (videoIndex >= musicData.length) {
             videoIndex -= 1
             if (repeat) {
-                videoListShuffle()
+                musicDataShuffle()
             } else {
                 return 0
             }
@@ -117,13 +122,13 @@ function onPlayerStateChange (event){
     // スライダーを起動
     changeTimeSlider()
     // タイトルの変更
-    document.title = 'epita | ' + videoList[videoIndex]['title']
+    document.title = 'epita | ' + musicData[videoIndex]['title']
     // 履歴の保存
     // 履歴のURLとタイトルが合わないことが多い
     // let url = new URL(window.location.href);
-    // if (videoList[videoIndex]['id'] != url.searchParams.get('v')) {
+    // if (musicData[videoIndex]['id'] != url.searchParams.get('v')) {
     //     setTimeout(() => {
-    //         history.pushState({}, '', `?v=${videoList[videoIndex]['id']}`)
+    //         history.pushState({}, '', `?v=${musicData[videoIndex]['id']}`)
     //     }, 1000);
     // }
 }
@@ -137,7 +142,7 @@ function specifiedVideos (num) {
         videoIndex = 0
         shuffleDone = false
         // 上までスクロール
-        document.getElementById(videoList[0].id).scrollIntoView({
+        document.getElementById(musicData[0].id).scrollIntoView({
             behavior: 'smooth'
         })
     }
@@ -147,9 +152,9 @@ function specifiedVideos (num) {
     document.getElementById('timeSlider').value = 0
     // 動画をロード
     player.loadVideoById({
-        videoId : videoList[num].movie,
-        startSeconds : videoList[num].start,
-        endSeconds : videoList[num].end,
+        videoId : musicData[num].movie,
+        startSeconds : musicData[num].start,
+        endSeconds : musicData[num].end,
     })
     // 再生中の動画を強調
     emphasisVideos()
@@ -158,7 +163,8 @@ function specifiedVideos (num) {
 
 // htmlを変更
 function createHtmlMusicList () {
-    document.querySelector("#loader").style.display = 'none'
+    document.querySelector("#loader").style.display = 'none' // ぐるぐる非表示
+    document.querySelector("#movie-ul").style.display = '' // リスト表示
     // ulの取得
     let movieUl = document.getElementById('movie-ul')
     // templateの取得
@@ -166,15 +172,15 @@ function createHtmlMusicList () {
     // ulの初期化
     movieUl.innerHTML = ''
     // 曲のリストを表示
-    for (let i=0; i<videoList.length; i+= 1){
+    for (let i=0; i<musicData.length; i+= 1){
         let newMovieLi = templateLi.content.cloneNode(true);
         // 編集
-        newMovieLi.querySelector('.movieLi').id = videoList[i]['id']
+        newMovieLi.querySelector('.movieLi').id = musicData[i]['id']
         newMovieLi.querySelector('.movieLi').addEventListener('click', {index:i ,handleEvent:function(){videoIndex = this.index;specifiedVideos(videoIndex)}}, false);
-        newMovieLi.querySelector('.img').src = 'https://img.youtube.com/vi/' + videoList[i]['movie'] + '/default.jpg'
-        newMovieLi.querySelector('.img').alt = videoList[i]['movie']
-        newMovieLi.querySelector('.title').textContent = videoList[i]['title']
-        newMovieLi.querySelector('.name').textContent = videoList[i]['name']
+        newMovieLi.querySelector('.img').src = 'https://img.youtube.com/vi/' + musicData[i]['movie'] + '/default.jpg'
+        newMovieLi.querySelector('.img').alt = musicData[i]['movie']
+        newMovieLi.querySelector('.title').textContent = musicData[i]['title']
+        newMovieLi.querySelector('.name').textContent = musicData[i]['name']
         // 追加
         movieUl.appendChild(newMovieLi);
     }
@@ -187,11 +193,11 @@ function createHtmlMusicList () {
 // 再生中の動画を強調
 function emphasisVideos(){
     // バックグランドの色を変更
-    for (let i=0; i < videoList.length; i++){
+    for (let i=0; i < musicData.length; i++){
         if (videoIndex == i){
-            document.getElementById(videoList[i].id).style = 'background-color: rgb(255,255,255,0.5);'
+            document.getElementById(musicData[i].id).style = 'background-color: rgb(255,255,255,0.5);'
         } else {
-            document.getElementById(videoList[i].id).style = ''
+            document.getElementById(musicData[i].id).style = ''
         }
     }
     // スクロール 強調したい動画よりも上にスクロール
@@ -203,7 +209,7 @@ function emphasisVideos(){
         add = videoIndex
     }
     setTimeout(() => {
-        document.getElementById(videoList[videoIndex-add].id).scrollIntoView({
+        document.getElementById(musicData[videoIndex-add].id).scrollIntoView({
             behavior: 'smooth'
         })
     }, 500);
@@ -214,8 +220,8 @@ function emphasisVideos(){
 let seek = false // seekTo中にスライダーの動作を停止、マウスを離したらON
 document.getElementById('timeSlider').addEventListener('input', () => {
     seek = true // スライダー管理
-    let videoMax = videoList[videoIndex].end-0
-    let videoStart = videoList[videoIndex].start-0
+    let videoMax = musicData[videoIndex].end-0
+    let videoStart = musicData[videoIndex].start-0
     if (videoMax == -1){
         videoMax = player.getDuration()
     }
@@ -224,8 +230,8 @@ document.getElementById('timeSlider').addEventListener('input', () => {
     player.seekTo(seekTime, allowSeekAhead=false)
 })
 document.getElementById('timeSlider').addEventListener('change',() =>{
-    let videoMax = videoList[videoIndex].end-0
-    let videoStart = videoList[videoIndex].start-0
+    let videoMax = musicData[videoIndex].end-0
+    let videoStart = musicData[videoIndex].start-0
     if (videoMax == -1){
         videoMax = player.getDuration()
     }
@@ -246,8 +252,8 @@ function addZero (num) {
 }
 // 時間管理スライダーを変更
 function changeTimeSlider() {
-    let videoStart = videoList[videoIndex].start-0
-    let videoMax = videoList[videoIndex].end-0
+    let videoStart = musicData[videoIndex].start-0
+    let videoMax = musicData[videoIndex].end-0
     if (videoMax == -1){
         videoMax = player.getDuration()
     }
@@ -256,7 +262,7 @@ function changeTimeSlider() {
         // スライダーの変更
         document.getElementById('timeSlider').value = 0
         // デジタルタイマーの変更
-        if (videoList[videoIndex].end == -1){
+        if (musicData[videoIndex].end == -1){
             // 一本の動画の場合
             document.getElementById('digitalTimer').innerHTML = '00:00' + '/' + '00:00'
         } else {
@@ -299,7 +305,7 @@ function playArrow(){
 }
 // スキップボタン
 function skipVideo () {
-    if (videoIndex+1 >= videoList.length){
+    if (videoIndex+1 >= musicData.length){
         videoIndex = 0
     } else {
         videoIndex += 1
@@ -311,7 +317,7 @@ function skipVideo () {
 function restoreVideo () {
     // videoIndexがマイナスになることを考える 最後に飛ぶ
     if (videoIndex < 1){
-        videoIndex = videoList.length - 1
+        videoIndex = musicData.length - 1
     } else {
         videoIndex -= 1
     }
@@ -323,8 +329,8 @@ function restoreVideo () {
 // 動画タイトルの表示、コントロール
 function information () {
     // htmlの書き換え
-    document.getElementById('controlTitle').innerHTML = videoList[videoIndex].title
-    document.getElementById('controlName').innerHTML = videoList[videoIndex].name
+    document.getElementById('controlTitle').innerHTML = musicData[videoIndex].title
+    document.getElementById('controlName').innerHTML = musicData[videoIndex].name
 }
 
 // 音量スライダーの非表示
@@ -407,17 +413,17 @@ function fisherYatesShuffle(arr){
 }
 // シャッフル後のインデックスを0にする
 let shuffleDone = false
-function videoListShuffle () {
+function musicDataShuffle () {
     // シャッフル後のインデックスを0にする
     shuffleDone = true
     // 以前のIDを保存
-    let previousId = videoList[videoIndex].id
-    // videoListをシャッフル
-    videoList = fisherYatesShuffle(videoList)
+    let previousId = musicData[videoIndex].id
+    // musicDataをシャッフル
+    musicData = fisherYatesShuffle(musicData)
     // 今の動画の新しいインデックスを取得
     // 再生中か停止中かで変更すべき
-    for (let i=0; i<videoList.length; i++) {
-        if (previousId == videoList[i].id){
+    for (let i=0; i<musicData.length; i++) {
+        if (previousId == musicData[i].id){
             videoIndex = i
         }
     }
