@@ -23,6 +23,10 @@ async function getDataFromServer (query){
     document.querySelector("#movie-ul").style.display = 'none' //リスト非表示
     let res = await fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?name=' + query)
     musicData = await res.json()
+    // idの割り振り
+    for (let i=0;i<musicData.length;i++){
+        musicData[i].id = i
+    }
     // htmlを変更
     createHtmlMusicList()
 }

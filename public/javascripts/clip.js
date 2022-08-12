@@ -53,18 +53,25 @@ function singerChange(){
 // ajax
 // fetchを使って実装
 async function getDataFromServer (query){
+    console.log('getDataFromServer')
+    console.log(musicData)
+    let tempData = []
     document.querySelector("#movieData").style.display = 'none' // データを非表示
     document.querySelector("#inputData").style.display = 'none'
     document.querySelector("#loader").style.display = '' // ぐるぐるを表示
     let res = await fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?name=' + query)
-    musicData = await res.json()
-    // id 削除
-    for (let i=0;i<musicData.length;i++){
-        delete musicData[i].id
+    tempData = await res.json()
+    if (tempData.length != 0){
+        // id 削除
+        for (let i=0;i<tempData.length;i++){
+            delete tempData[i].id
+        }
+        musicData = tempData.slice()
+        createTable() // テーブルに反映
+    } else {
+        // 何もないときはそのまま
+        createTable()
     }
-    createTable() // テーブルに反映
-    singer =
-    singerChange() // singerの変更
 }
 
 // 時間用の0を追加
@@ -231,16 +238,26 @@ window.addEventListener('resize', function () {
 
 // postの実装
 async function doPost(){
+    // あいことば
+    let pass = document.querySelector("#password").value
+    let data = musicData.slice()
+    data.unshift({pass: pass})
+    // 送信
     fetch('/clip/addData', {
         method: 'POST', // or 'PUT'
         headers: {
         'Content-Type': 'application/json',
         },
-        body: JSON.stringify(musicData),
+        body: JSON.stringify(data),
     })
-    .then(response => response.text())
+    .then(response => response.json())
     .then(data => {
         console.log('Success:', data);
+        if (data.auth == true){
+            alert(data.message)
+        } else {
+            alert(data.message)
+        }
     })
     .catch((error) => {
         console.error('Error:', error);
