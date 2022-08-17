@@ -9,6 +9,7 @@ th,td{
 
 .workspace{
     flex: 1;
+    margin: auto 0;
 }
 .skipRange{
     width: 50%;
