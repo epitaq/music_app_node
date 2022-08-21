@@ -454,3 +454,24 @@ window.addEventListener('resize', function () {
 //         // document.getElementById('selectTypeB').style.display = 'block'
 //     },1000)
 // })
+
+// moreボタン
+document.querySelector("#moreButton").addEventListener('click', ()=>{
+    document.querySelector("#moreBox").style.display=''
+    document.querySelector("#moreBox").focus()
+})
+document.querySelector("#moreBox").addEventListener('blur', ()=>{
+    setTimeout(() => {
+        document.querySelector("#moreBox").style.display='none'
+    }, 100);
+})
+// Youtube をクリックしたとき止める urlの編集
+document.querySelector("#originMovie").addEventListener('click', ()=>{
+    // url
+    let url = 'https://www.youtube.com/watch?v=' + musicData[videoIndex].movie + '&t=' + musicData[videoIndex].start
+    window.open(url)
+    // stop
+    if (playStatus == 1){
+        playArrow()
+    }
+})

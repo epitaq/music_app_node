@@ -142,6 +142,16 @@ body {
 /* .volumeRepeatShuffle{
     display: flex;
 } */
+.moreInfo{
+    position:absolute;
+    background-color: #999;
+    top: -46px;
+    right: 32px;
+    text-align: left;
+    flex-direction: column;
+    display: flex;
+
+}
 
 /* 画面サイズが480pxからはここを読み込む */
 @media screen and (min-aspect-ratio: 1/1) {
@@ -170,3 +180,4 @@ body {
         display: flex;
     }
 }
+

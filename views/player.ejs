@@ -75,7 +75,18 @@
                     <img src="/images/volume_up_white_24dp.svg" id="volumeButton" onclick="changeMute()" class="RIcon" >
                 </div>
                 <img src="/images/repeat_white_24dp.svg" id="repeatButton" onclick="changeRepeat()" class="RIcon" style="display: none;" >
-                <img src="/images/shuffle_white_24dp.svg" id="shuffleButton" onclick="musicDataShuffle()" class="RIcon" style="margin-right: 32px;">
+                <img src="/images/shuffle_white_24dp.svg" id="shuffleButton" onclick="musicDataShuffle()" class="RIcon" >
+                <img src="/images/more_vert_white_24dp.svg" alt="more_vert" id="moreButton" class="RIcon"  style="margin-right: 32px;">
+                <div class="moreInfo" style="display: none;" id="moreBox" tabindex="5">
+                    <a id="originMovie" target="_blank" rel="noopener noreferrer">
+                        <img src="/images/launch_white_24dp.svg">
+                        <span>元の動画を見る</span>
+                    </a>
+                    <a href="/clip" target="_blank" rel="noopener noreferrer">
+                        <img src="/images/playlist_add_white_24dp.svg">
+                        <span>データを作成する</span>
+                    </a>
+                </div>
             </div>
         </div>
         <script type="text/javascript" src="/javascripts/player.js"></script>
