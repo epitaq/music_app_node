@@ -19,9 +19,9 @@ function onYouTubeIframeAPIReady() {
 
 
 // 離れる時に警告
-// window.onbeforeunload = function(e) {
-//     e.returnValue = "ページを離れようとしています。よろしいですか？";
-// }
+window.onbeforeunload = function(e) {
+    e.returnValue = "ページを離れようとしています。よろしいですか？";
+}
 
 
 // メインのデータ open先でも使いたいからVARにしている
@@ -51,7 +51,7 @@ function singerChange(){
 }
 
 // ajax
-// fetchを使って実装
+// 同じデータがあるか検索
 async function getDataFromServer (query){
     console.log('getDataFromServer')
     console.log(musicData)
@@ -59,7 +59,7 @@ async function getDataFromServer (query){
     document.querySelector("#movieData").style.display = 'none' // データを非表示
     document.querySelector("#inputData").style.display = 'none'
     document.querySelector("#loader").style.display = '' // ぐるぐるを表示
-    let res = await fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?name=' + query)
+    let res = await fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?sheet=' + query)
     tempData = await res.json()
     if (tempData.length != 0){
         // id 削除

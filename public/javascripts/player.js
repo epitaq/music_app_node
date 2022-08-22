@@ -1,6 +1,13 @@
 // 動画のリスト
 let musicData = []
 
+// sheet確認
+const url = new URL(window.location.href)
+let sheet = url.searchParams.get('sheet')
+if (sheet == undefined){
+    sheet = 'MusicList'
+}
+
 if (window.opener){
     console.log('うつってきた')
     musicData = window.opener.window.musicData
@@ -21,7 +28,7 @@ if (window.opener){
 async function getDataFromServer (query){
     document.querySelector("#loader").style.display = '' // ぐるぐるの表示
     document.querySelector("#movie-ul").style.display = 'none' //リスト非表示
-    let res = await fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?name=' + query)
+    let res = await fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?sheet=' + sheet + '&?search=' + query)
     musicData = await res.json()
     // idの割り振り
     for (let i=0;i<musicData.length;i++){
@@ -127,14 +134,6 @@ function onPlayerStateChange (event){
     changeTimeSlider()
     // タイトルの変更
     document.title = 'epita | ' + musicData[videoIndex]['title']
-    // 履歴の保存
-    // 履歴のURLとタイトルが合わないことが多い
-    // let url = new URL(window.location.href);
-    // if (musicData[videoIndex]['id'] != url.searchParams.get('v')) {
-    //     setTimeout(() => {
-    //         history.pushState({}, '', `?v=${musicData[videoIndex]['id']}`)
-    //     }, 1000);
-    // }
 }
 
 
