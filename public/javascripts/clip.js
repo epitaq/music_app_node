@@ -52,26 +52,56 @@ function singerChange(){
 
 // ajax
 // 同じデータがあるか検索
-async function getDataFromServer (query){
+// async function getDataFromServer (query){
+//     console.log('getDataFromServer')
+//     console.log(musicData)
+//     let tempData = []
+//     document.querySelector("#movieData").style.display = 'none' // データを非表示
+//     document.querySelector("#inputData").style.display = 'none'
+//     document.querySelector("#loader").style.display = '' // ぐるぐるを表示
+//     let res = await fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?sheet=' + query ,
+//     {
+//         mode: 'no-cors',
+//         redirect: 'follow',
+//     })
+//     tempData = await res.json()
+//     if (tempData.length != 0){
+//         // id 削除
+//         for (let i=0;i<tempData.length;i++){
+//             delete tempData[i].id
+//         }
+//         musicData = tempData.slice()
+//         createTable() // テーブルに反映
+//     } else {
+//         // 何もないときはそのまま
+//         createTable()
+//     }
+// }
+function getDataFromServer (query){
     console.log('getDataFromServer')
     console.log(musicData)
-    let tempData = []
     document.querySelector("#movieData").style.display = 'none' // データを非表示
     document.querySelector("#inputData").style.display = 'none'
     document.querySelector("#loader").style.display = '' // ぐるぐるを表示
-    let res = await fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?sheet=' + query)
-    tempData = await res.json()
-    if (tempData.length != 0){
-        // id 削除
-        for (let i=0;i<tempData.length;i++){
-            delete tempData[i].id
+
+    fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?sheet=' + query,{
+        mode:"cors",
+        headers:{
+            'Content-Type':'text/plain'
         }
-        musicData = tempData.slice()
+    })
+    .then(response => {
+        console.log(response)
+        return response.json()
+    })
+    .then(data => {
+        console.log(data)
+        // 何もなかったら変更しない
+        if (data.length != 0){
+            musicData = data.slice() // コピー
+        }
         createTable() // テーブルに反映
-    } else {
-        // 何もないときはそのまま
-        createTable()
-    }
+    });
 }
 
 // 時間用の0を追加
@@ -249,6 +279,7 @@ async function doPost(){
         'Content-Type': 'application/json',
         },
         body: JSON.stringify(data),
+        mode: "no-cors",
     })
     .then(response => response.json())
     .then(data => {

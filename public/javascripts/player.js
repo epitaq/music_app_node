@@ -25,18 +25,48 @@ if (window.opener){
 
 // ajax
 // fetchを使って実装
-async function getDataFromServer (query){
+// async function getDataFromServer (query){
+//     document.querySelector("#loader").style.display = '' // ぐるぐるの表示
+//     document.querySelector("#movie-ul").style.display = 'none' //リスト非表示
+
+//     let res = await fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?sheet=' + sheet + '&search=' + query,
+//     {
+//         mode: 'no-cors',
+//     })
+//     musicData = await res.json()
+//     // idの割り振り
+//     for (let i=0;i<musicData.length;i++){
+//         musicData[i].id = i
+//     }
+//     // htmlを変更
+//     createHtmlMusicList()
+// }
+function getDataFromServer (query){
     document.querySelector("#loader").style.display = '' // ぐるぐるの表示
     document.querySelector("#movie-ul").style.display = 'none' //リスト非表示
-    let res = await fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?sheet=' + sheet + '&?search=' + query)
-    musicData = await res.json()
-    // idの割り振り
-    for (let i=0;i<musicData.length;i++){
-        musicData[i].id = i
-    }
-    // htmlを変更
-    createHtmlMusicList()
+
+    fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?sheet=' + sheet + '&search=' + query,{
+        mode:"cors",
+        headers:{
+            'Content-Type':'text/plain'
+        }
+    })
+    .then(response => {
+        console.log(response)
+        return response.json()
+    })
+    .then(data => {
+        console.log(data)
+        musicData = data
+        // idの割り振り
+        for (let i=0;i<musicData.length;i++){
+            musicData[i].id = i
+        }
+        // htmlを変更
+        createHtmlMusicList()
+    });
 }
+
 
 // 検索
 document.getElementById('textBox').addEventListener('change', () => {
