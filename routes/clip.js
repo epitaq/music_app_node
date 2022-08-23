@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
+const password = '3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b'
+
 router.get('/', function(req, res, next) {
     res.render('clip', { });
 });
@@ -12,7 +14,7 @@ router.post('/addData', function(req, res){
     console.log(musicData[0])
     // 合言葉があってるときは本データに追加、間違ってるときは新しいシートに追加
     // あいことばは後で抜く
-    if (musicData[0].pass == '3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b'){
+    if (musicData[0].pass == password){
         addData(1, musicData) // data追加
         console.log('Auth Success : ' + musicData.length)
         // res.send('Auth Success')
