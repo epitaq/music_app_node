@@ -269,10 +269,11 @@ window.addEventListener('resize', function () {
 // postの実装
 async function doPost(){
     // あいことば
-    let pass = ''
-    await sha256(document.querySelector("#password").value).then(hash => pass = hash) // ハッシュ化
+    let pass = document.querySelector("#password").value
+    // await sha256(document.querySelector("#password").value).then(hash => pass = hash) // ハッシュ化
+    pass = hide(pass)
     let data = musicData.slice()
-    data.unshift({pass: pass})
+    data.unshift({'pass': pass})
     console.log(data)
     // 送信
     fetch('/clip/addData', {
@@ -298,8 +299,20 @@ async function doPost(){
 }
 
 // ハッシュ化
-async function sha256(text){
-    const uint8  = new TextEncoder().encode(text)
-    const digest = await crypto.subtle.digest('SHA-256', uint8)
-    return Array.from(new Uint8Array(digest)).map(v => v.toString(16).padStart(2,'0')).join('')
+// async function sha256(text){
+//     const uint8  = new TextEncoder().encode(text)
+//     const digest = await crypto.subtle.digest('SHA-256', uint8)
+//     return Array.from(new Uint8Array(digest)).map(v => v.toString(16).padStart(2,'0')).join('')
+// }
+// ハッシュ化したかったが、Chromeにhっtpsにしろって言われた
+function hide(text){
+    let pass = ''
+    for (let i=0; i<text.length; i++){
+        pass += text[i].charCodeAt(0)
+    }
+    pass = pass - 0
+    pass = pass.toString(2)
+    // console.log(pass)
+    // console.log(pass.toString(2))
+    return pass
 }

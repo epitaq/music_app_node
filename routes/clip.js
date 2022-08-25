@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 
-const password = '3a7bd3e2360a3d29eea436fcfb7e44c735d117c42d1c1835420b6b9942dd4f1b'
+const password = '10110000101001010101100111100100001001001000101'
 
 router.get('/', function(req, res, next) {
     res.render('clip', { });
