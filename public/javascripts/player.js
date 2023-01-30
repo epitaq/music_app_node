@@ -25,22 +25,6 @@ if (window.opener){
 
 // ajax
 // fetchを使って実装
-// async function getDataFromServer (query){
-//     document.querySelector("#loader").style.display = '' // ぐるぐるの表示
-//     document.querySelector("#movie-ul").style.display = 'none' //リスト非表示
-
-//     let res = await fetch('https://script.google.com/macros/s/AKfycbyG8njUoIqZf61GsXO5VBFE9qeE8bQ_dSGFv7R25eVMBtc6NZoytz6vy-X9NCaq23xJag/exec?sheet=' + sheet + '&search=' + query,
-//     {
-//         mode: 'no-cors',
-//     })
-//     musicData = await res.json()
-//     // idの割り振り
-//     for (let i=0;i<musicData.length;i++){
-//         musicData[i].id = i
-//     }
-//     // htmlを変更
-//     createHtmlMusicList()
-// }
 function getDataFromServer (query){
     document.querySelector("#loader").style.display = '' // ぐるぐるの表示
     document.querySelector("#movie-ul").style.display = 'none' //リスト非表示
@@ -132,6 +116,7 @@ let playStatus = 0
 let loadDone = false
 
 function onPlayerStateChange (event){
+    console.log(event.data)
     // 再生ボタンの形 playStatusここでのみ変更
     if (event.data == 1){
         document.getElementById('playArrow').src = '/images/pause_white_24dp.svg'
