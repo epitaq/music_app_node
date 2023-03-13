@@ -12,6 +12,6 @@ Node.jsのexpressを利用
 
 ## 起動方法  
 ```
-node bin/www
+npm run start
 ```
   
