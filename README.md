@@ -19,4 +19,16 @@ npm install
 ```
 npm run start
 ```
+
+## 使い方
+
+### 音楽再生ページ
+[localhost:3000/player](http://localhost:3000/player)
+  
+メインの音楽再生ページです  
+
+### データ作成ページ
+[localhost:3000/clip](hhtp://localhost:3000/clip)
+このウェブサイトで使うデータを作成することができます。  
+データ作成から登録までできます。
   
