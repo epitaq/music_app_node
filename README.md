@@ -28,7 +28,8 @@ npm run start
 メインの音楽再生ページです  
 
 ### データ作成ページ
-[localhost:3000/clip](hhtp://localhost:3000/clip)
+[localhost:3000/clip](http://localhost:3000/clip)  
+
 このウェブサイトで使うデータを作成することができます。  
 データ作成から登録までできます。
   
