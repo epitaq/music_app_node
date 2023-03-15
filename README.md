@@ -10,6 +10,11 @@
 ることができます。  
 Node.jsのexpressを利用
 
+## セットアップ
+```
+npm install
+```
+
 ## 起動方法  
 ```
 npm run start
