@@ -1,0 +1,46 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: music-app
+  labels:
+    name: music-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: music-app-service
+  namespace: music-app
+  labels:
+    app: music-app-service
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: music-app
+  type: LoadBalancer
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: music-app
+  namespace: music-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: music-app
+  template:
+    metadata:
+      labels:
+        app: music-app
+    spec:
+      containers:
+        - name: music-app
+          image: epita/music_app_node:latest
+          command:
+          ports:
+            - containerPort: 3000
